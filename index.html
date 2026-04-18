@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Memory Game </title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at top, #1a0033, #050014);
+  color: #b388ff;
+
+  font-family: monospace;
+  overflow: hidden;
+  transition: background 1.2s ease;
+}
+
+.container {
+  text-align: center;
+  max-width: 650px;
+  padding: 20px;
+}
+
+#text {
+  font-size: 20px;
+  line-height: 1.8;
+  min-height: 120px;
+  text-shadow: 0 0 15px rgba(179,136,255,0.6);
+  transition: opacity 0.5s ease;
+}
+
+button {
+  margin-top: 20px;
+  padding: 12px 25px;
+  border: none;
+  background: #7c4dff;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 25px;
+}
+
+button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #7c4dff;
+}
+
+img {
+  max-width: 85%;
+  border-radius: 15px;
+  margin-top: 20px;
+  animation: pop 1s ease;
+  box-shadow: 0 0 25px rgba(124,77,255,0.4);
+}
+
+@keyframes pop {
+  from {opacity: 0; transform: scale(0.9);}
+  to {opacity: 1; transform: scale(1);}
+}
+</style>
+
+</head>
+
+<body>
+
+<audio id="bgm" src="music.mp3" loop></audio>
+
+<div class="container">
+  <div id="text"></div>
+  <div id="image"></div>
+  <button onclick="next()">Start</button>
+</div>
+
+<script>
+let step = 0;
+const text = document.getElementById("text");
+const image = document.getElementById("image");
+
+//  typing effect (clean + controlled)
+function typeWriter(msg, i = 0) {
+  text.innerHTML = "";
+
+  function typing() {
+    if (i < msg.length) {
+      text.innerHTML += msg.charAt(i);
+      i++;
+      setTimeout(typing, 65); //  speed (smooth + slow)
+    }
+  }
+
+  typing();
+}
+
+//  pause helper
+function pause(ms) {
+  return new Promise(res => setTimeout(res, ms));
+}
+
+async function next() {
+  step++;
+
+  if (step === 1) {
+    document.getElementById("bgm").volume = 0.4;
+    document.getElementById("bgm").play();
+
+    typeWriter("Loading memory... ");
+    image.innerHTML = "";
+  }
+
+  else if (step === 2) {
+    typeWriter("Best moment captured ");
+    image.innerHTML = "<img src='us.jpg'>";
+  }
+
+  else if (step === 3) {
+    typeWriter("Boss Fight  Who won?");
+    image.innerHTML = "<img src='game.jpg'>";
+
+    await pause(1200);
+    typeWriter("You win… always ");
+  }
+
+  else if (step === 4) {
+    document.body.style.background =
+      "radial-gradient(circle at bottom, #0a001a, #000)";
+
+    typeWriter("Honestly… that loss was worth it ");
+    image.innerHTML = "";
+  }
+
+  else if (step === 5) {
+    await pause(700);
+    typeWriter("Maybe it was just a night at an event…");
+  }
+
+  else if (step === 6) {
+    await pause(700);
+    typeWriter("But you turned it into a memory I will never forget ");
+  }
+
+  else if (step === 7) {
+    typeWriter("Game Over…");
+  }
+
+  else if (step === 8) {
+    await pause(700);
+    typeWriter("But I still want to play every moment of my life with you ");
+  }
+}
+</script>
+
+</body>
+</html>
