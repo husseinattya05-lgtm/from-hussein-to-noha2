@@ -4,9 +4,10 @@
 
 <meta charset="UTF-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Memory Game </title>
+<title>Memory Game 🎮</title>
 
 <style>
 body {
@@ -75,7 +76,7 @@ img {
 <audio id="bgm" src="music.mp3" loop></audio>
 
 <div class="container">
-  <div id="text">Loaded: Memory Game</div>
+  <div id="text">Loaded: Memory Game 🎮</div>
   <div id="image"></div>
   <button id="btn" onclick="next()">Start</button>
 </div>
@@ -90,7 +91,7 @@ const text = document.getElementById("text");
 const image = document.getElementById("image");
 const btn = document.getElementById("btn");
 
-//  typing ( )
+// ⌨️ typing effect (slow & smooth)
 function typeWriter(msg, i = 0) {
   typing = true;
   btn.disabled = true;
@@ -101,7 +102,7 @@ function typeWriter(msg, i = 0) {
     if (i < msg.length) {
       text.innerHTML += msg.charAt(i);
       i++;
-      setTimeout(write, 90); //    
+      setTimeout(write, 85); // slow typing
     } else {
       typing = false;
       btn.disabled = false;
@@ -112,7 +113,7 @@ function typeWriter(msg, i = 0) {
   write();
 }
 
-//  pause
+// ⏱ delay helper
 function pause(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
@@ -132,13 +133,13 @@ async function next() {
     music.volume = 0.4;
     music.play();
 
-    typeWriter("Loading memory... ");
+    typeWriter("Loading memory... 🎮");
     image.innerHTML = "";
   }
 
   // 2
   else if (step === 2) {
-    typeWriter("Best moment captured ");
+    typeWriter("Best moment captured 💫");
     image.innerHTML = "<img src='us.jpg'>";
   }
 
@@ -149,14 +150,14 @@ async function next() {
 
     setTimeout(() => {
       const current = text.innerHTML;
-      text.innerHTML = current + "<br><br>You win� always ";
+      text.innerHTML = current + "<br><br>You win… always 😡❤️";
 
       setTimeout(() => {
         locked = false;
         btn.disabled = false;
-      }, 1200);
+      }, 1000);
 
-    }, 2200);
+    }, 2000);
   }
 
   // 4
@@ -164,31 +165,31 @@ async function next() {
     document.body.style.background =
       "radial-gradient(circle at bottom, #0a001a, #000)";
 
-    typeWriter("Honestly� that loss was worth it ");
+    typeWriter("Honestly… that loss was worth it ❤️");
     image.innerHTML = "";
   }
 
   // 5
   else if (step === 5) {
-    await pause(900);
-    typeWriter("Maybe it was just a night at an event�");
+    await pause(800);
+    typeWriter("Maybe it was just a night at an event…");
   }
 
   // 6
   else if (step === 6) {
-    await pause(900);
-    typeWriter("But you turned it into a memory I will never forget ");
+    await pause(800);
+    typeWriter("But you turned it into a memory I will never forget ❤️");
   }
 
   // 7
   else if (step === 7) {
-    typeWriter("Game Over�");
+    typeWriter("Game Over…");
   }
 
   // 8
   else if (step === 8) {
-    await pause(900);
-    typeWriter("But I still want to play every moment of my life with you ");
+    await pause(800);
+    typeWriter("But I still want to play every moment of my life with you 😡❤️");
   }
 }
 
