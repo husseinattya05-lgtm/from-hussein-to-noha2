@@ -70,7 +70,6 @@ img {
 
 <body>
 
-<!--  Music -->
 <audio id="bgm" src="music.mp3" loop></audio>
 
 <div class="container">
@@ -82,12 +81,13 @@ img {
 <script>
 let step = 0;
 let typing = false;
+let locked = false;
 
 const text = document.getElementById("text");
 const image = document.getElementById("image");
 const btn = document.getElementById("btn");
 
-//  typing effect (safe)
+//  typing effect
 function typeWriter(msg, i = 0) {
   typing = true;
   btn.disabled = true;
@@ -98,10 +98,11 @@ function typeWriter(msg, i = 0) {
     if (i < msg.length) {
       text.innerHTML += msg.charAt(i);
       i++;
-      setTimeout(write, 65); // smooth speed
+      setTimeout(write, 65);
     } else {
       typing = false;
       btn.disabled = false;
+      locked = false;
     }
   }
 
@@ -114,7 +115,10 @@ function pause(ms) {
 }
 
 async function next() {
-  if (typing) return;
+  if (typing || locked) return;
+
+  locked = true;
+  btn.disabled = true;
 
   step++;
 
@@ -134,15 +138,21 @@ async function next() {
     image.innerHTML = "<img src='us.jpg'>";
   }
 
-  // 3 (FIXED: no overlap bug)
+  // 3 (FIXED + LOCK SAFE)
   else if (step === 3) {
     typeWriter("Boss Fight - Who won?");
     image.innerHTML = "<img src='game.jpg'>";
 
-    setTimeout(async () => {
-      await pause(1200);
-      typeWriter("You win… always ");
-    }, 1400);
+    setTimeout(() => {
+      const current = text.innerHTML;
+      text.innerHTML = current + "<br><br>You win… always ";
+
+      setTimeout(() => {
+        locked = false;
+        btn.disabled = false;
+      }, 800);
+
+    }, 1800);
   }
 
   // 4
