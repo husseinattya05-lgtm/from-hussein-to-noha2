@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Memory Game </title>
 
 <style>
@@ -30,8 +32,8 @@ body {
   font-size: 20px;
   line-height: 1.8;
   min-height: 120px;
+  white-space: pre-line;
   text-shadow: 0 0 15px rgba(179,136,255,0.6);
-  transition: opacity 0.5s ease;
 }
 
 button {
@@ -45,9 +47,9 @@ button {
   border-radius: 25px;
 }
 
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 20px #7c4dff;
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 img {
@@ -73,52 +75,62 @@ img {
 <div class="container">
   <div id="text"></div>
   <div id="image"></div>
-  <button onclick="next()">Start</button>
+  <button id="btn" onclick="next()">Start</button>
 </div>
 
 <script>
 let step = 0;
+let typing = false;
+
 const text = document.getElementById("text");
 const image = document.getElementById("image");
+const btn = document.getElementById("btn");
 
-//  typing effect (clean + controlled)
+//  safe typing
 function typeWriter(msg, i = 0) {
+  typing = true;
+  btn.disabled = true;
+
   text.innerHTML = "";
 
-  function typing() {
+  function write() {
     if (i < msg.length) {
       text.innerHTML += msg.charAt(i);
       i++;
-      setTimeout(typing, 65); //  speed (smooth + slow)
+      setTimeout(write, 65);
+    } else {
+      typing = false;
+      btn.disabled = false;
     }
   }
 
-  typing();
+  write();
 }
 
-//  pause helper
 function pause(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
 
 async function next() {
+  if (typing) return; //   
+
   step++;
 
   if (step === 1) {
     document.getElementById("bgm").volume = 0.4;
     document.getElementById("bgm").play();
 
-    typeWriter("Loading memory... ");
+    typeWriter("Loading memory...");
     image.innerHTML = "";
   }
 
   else if (step === 2) {
-    typeWriter("Best moment captured ");
+    typeWriter("Best moment captured");
     image.innerHTML = "<img src='us.jpg'>";
   }
 
   else if (step === 3) {
-    typeWriter("Boss Fight  Who won?");
+    typeWriter("Boss Fight - Who won?");
     image.innerHTML = "<img src='game.jpg'>";
 
     await pause(1200);
