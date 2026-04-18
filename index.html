@@ -70,10 +70,11 @@ img {
 
 <body>
 
+<!--  Music -->
 <audio id="bgm" src="music.mp3" loop></audio>
 
 <div class="container">
-  <div id="text"></div>
+  <div id="text">Loaded: Memory Game </div>
   <div id="image"></div>
   <button id="btn" onclick="next()">Start</button>
 </div>
@@ -86,7 +87,7 @@ const text = document.getElementById("text");
 const image = document.getElementById("image");
 const btn = document.getElementById("btn");
 
-//  safe typing
+//  typing effect (safe)
 function typeWriter(msg, i = 0) {
   typing = true;
   btn.disabled = true;
@@ -97,7 +98,7 @@ function typeWriter(msg, i = 0) {
     if (i < msg.length) {
       text.innerHTML += msg.charAt(i);
       i++;
-      setTimeout(write, 65);
+      setTimeout(write, 65); // smooth speed
     } else {
       typing = false;
       btn.disabled = false;
@@ -107,36 +108,44 @@ function typeWriter(msg, i = 0) {
   write();
 }
 
+//  pause helper
 function pause(ms) {
   return new Promise(res => setTimeout(res, ms));
 }
 
 async function next() {
-  if (typing) return; //   
+  if (typing) return;
 
   step++;
 
+  // 1
   if (step === 1) {
-    document.getElementById("bgm").volume = 0.4;
-    document.getElementById("bgm").play();
+    const music = document.getElementById("bgm");
+    music.volume = 0.4;
+    music.play();
 
-    typeWriter("Loading memory...");
+    typeWriter("Loading memory... ");
     image.innerHTML = "";
   }
 
+  // 2
   else if (step === 2) {
-    typeWriter("Best moment captured");
+    typeWriter("Best moment captured ");
     image.innerHTML = "<img src='us.jpg'>";
   }
 
+  // 3 (FIXED: no overlap bug)
   else if (step === 3) {
     typeWriter("Boss Fight - Who won?");
     image.innerHTML = "<img src='game.jpg'>";
 
-    await pause(1200);
-    typeWriter("You win… always ");
+    setTimeout(async () => {
+      await pause(1200);
+      typeWriter("You win… always ");
+    }, 1400);
   }
 
+  // 4
   else if (step === 4) {
     document.body.style.background =
       "radial-gradient(circle at bottom, #0a001a, #000)";
@@ -145,20 +154,24 @@ async function next() {
     image.innerHTML = "";
   }
 
+  // 5
   else if (step === 5) {
     await pause(700);
     typeWriter("Maybe it was just a night at an event…");
   }
 
+  // 6
   else if (step === 6) {
     await pause(700);
     typeWriter("But you turned it into a memory I will never forget ");
   }
 
+  // 7
   else if (step === 7) {
     typeWriter("Game Over…");
   }
 
+  // 8
   else if (step === 8) {
     await pause(700);
     typeWriter("But I still want to play every moment of my life with you ");
